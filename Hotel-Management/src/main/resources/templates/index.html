@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hotel Reservation</title>
+  <link rel="stylesheet" th:href="@{/styling.css}"/>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">HR</div>
+        <div>
+          <h2 style="margin:0">Hotel Reservation</h2>
+          <div style="color:var(--muted);font-size:13px">Simple & secure booking</div>
+        </div>
+      </div>
+      <div>
+        <a th:href="@{/guests}" class="count-badge">View All Guests</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>New Booking</h3>
+      <div th:if="${success}" style="color:green;margin-bottom:10px" th:text="${success}"></div>
+      <div th:if="${error}" style="color:red;margin-bottom:10px" th:text="${error}"></div>
+
+      <form th:action="@{/book}" method="post">
+        <div class="form-grid">
+          <div>
+            <label for="name">Full name</label>
+            <input id="name" name="name" required />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+          </div>
+          <div>
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" required />
+          </div>
+          <div>
+            <label for="aadhar">Aadhar</label>
+            <input id="aadhar" name="aadhar" required />
+          </div>
+          <div>
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" min="1" required />
+          </div>
+          <div>
+            <label for="members">Members</label>
+            <input id="members" name="members" type="number" min="1" required />
+          </div>
+          <div class="full">
+            <label for="lengthOfStay">Length of stay (days)</label>
+            <input id="lengthOfStay" name="lengthOfStay" type="number" min="1" required />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="primary">Book Guest</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

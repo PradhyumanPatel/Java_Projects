@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Guest List</title>
+  <link rel="stylesheet" th:href="@{/styling.css}" />
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">HR</div>
+        <div>
+          <h2 style="margin:0">All Guests</h2>
+          <div style="color:var(--muted);font-size:13px">Total: <span th:text="${count}">0</span></div>
+        </div>
+      </div>
+      <div>
+        <a th:href="@{/index}" class="count-badge">New Booking</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <form method="get" th:action="@{/guests}">
+        <!-- one-click: pressing this Submit will reload page and display table (idempotent GET) -->
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:600">Guest Directory</div>
+          <div>
+            <button type="submit" class="primary">Show Full Guest List</button>
+          </div>
+        </div>
+      </form>
+
+      <div th:if="${guests.size() == 0}" class="no-data">No guests found.</div>
+
+      <table th:if="${guests.size() > 0}" class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Aadhar</th>
+            <th>Age</th>
+            <th>Stay</th>
+            <th>Members</th>
+            <th>CheckIn</th>
+            <th>CheckOut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="g : ${guests}">
+            <td th:text="${g.id}">1</td>
+            <td th:text="${g.name}">Name</td>
+            <td th:text="${g.email}">email</td>
+            <td th:text="${g.phone}">phone</td>
+            <td th:text="${g.aadhar}">aadhar</td>
+            <td th:text="${g.age}">30</td>
+            <td th:text="${g.lengthOfStay}">2</td>
+            <td th:text="${g.members}">1</td>
+            <td th:text="${g.checkInTime}">2025-11-09</td>
+            <td th:text="${g.checkOutTime}">-</td>
+			
+			<td>
+			    <!-- Show checkout button ONLY if guest exists AND checkoutDate is NULL -->
+			    <th:block th:if="${g != null and g.checkOutTime == null}">
+			        <form th:action="@{'/checkout/' + ${g.id}}" method="post" style="display:inline">
+			            <button type="submit"
+			                    style="padding:6px 8px;border-radius:8px;border:0;background:#f97316;color:white;">
+			                Check Out
+			            </button>
+			        </form>
+			    </th:block>
+
+			    <!-- Hide checkout button AND show a label when guest already checked out -->
+			    <th:block th:if="${g != null and g.checkOutTime != null}">
+			        <span style="padding:6px 8px;border-radius:8px;background:#22c55e;color:white;">
+			            Checked Out
+			        </span>
+			    </th:block>
+			</td>
+
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</body>
+</html>
